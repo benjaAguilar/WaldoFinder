@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import mockDB from "../mockDB.json";
+import { Chrono } from "../components/Chrono";
 
 export function Game() {
   const imageRef = useRef<HTMLImageElement | null>(null);
@@ -89,6 +90,9 @@ export function Game() {
 
   return (
     <>
+      <div className="chrono">
+        <Chrono />
+      </div>
       <img
         className="waldoImage"
         src={waldoGame.img}
