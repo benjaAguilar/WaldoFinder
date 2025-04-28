@@ -1,0 +1,35 @@
+{
+  "waldoWarriors": {
+    "coords": {
+      "x1": 458,
+      "y1": 1563,
+      "x2": 487,
+      "y2": 1527
+    },
+    "width": 2828,
+    "height": 1828,
+    "img": "/WaldoAndWarriors.webp"
+  },
+  "waldoBeach": {
+    "coords": {
+      "x1": 1172,
+      "y1": 362,
+      "x2": 1203,
+      "y2": 325
+    },
+    "width": 1920,
+    "height": 900,
+    "img": "/waldoBeach.webp"
+  },
+  "waldoDragons": {
+    "coords": {
+      "x1": 3066,
+      "y1": 934,
+      "x2": 3094,
+      "y2": 880
+    },
+    "width": 3566,
+    "height": 2257,
+    "img": "/waldodragons.webp"
+  }
+}
