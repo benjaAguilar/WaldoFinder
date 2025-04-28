@@ -3,7 +3,6 @@ import { Home } from "./pages/Home";
 import { Game } from "./pages/Game";
 
 import { ErrorPage } from "./pages/ErrorPage";
-import { GetWaldoCoords } from "./pages/WaldoCoords";
 
 export const router = createBrowserRouter([
   {
@@ -14,9 +13,5 @@ export const router = createBrowserRouter([
   {
     path: "/game",
     element: <Game />,
-  },
-  {
-    path: "/coords",
-    element: <GetWaldoCoords />,
   },
 ]);
