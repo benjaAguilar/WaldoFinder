@@ -113,6 +113,17 @@ button:focus-visible {
   border-color: greenyellow;
 }
 
+.chrono {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1a1a1a;
+  padding: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-bottom-right-radius: 1rem;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
