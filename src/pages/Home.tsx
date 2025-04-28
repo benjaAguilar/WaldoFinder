@@ -10,7 +10,6 @@ export function Home() {
         <WaldoCard img="/WaldoAndWarriors.webp" title="Waldo and warriors" />
         <WaldoCard img="/waldodragons.webp" title="Waldo and dragons" />
       </div>
-      <a href="/game">Play</a>
     </div>
   );
 }
