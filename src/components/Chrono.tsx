@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+interface chronoProp {
+  chronoState: string;
+}
 
-export function Chrono() {
+export function Chrono({ chronoState }: chronoProp) {
+  const interval = useRef<number | null>(null);
+
   const [time, setTime] = useState({
     minleft: 0,
     minRight: 0,
@@ -10,34 +15,31 @@ export function Chrono() {
     milRight: 0,
   });
 
-  useEffect(() => {
-    const interval = setInterval(() => {
+  const startChrono = useCallback(() => {
+    if (interval.current !== null) return;
+
+    interval.current = window.setInterval(() => {
       setTime((prevTime) => {
         let { minleft, minRight, secLeft, secRight, milLeft, milRight } =
           prevTime;
 
         milRight++;
-
         if (milRight > 9) {
           milRight = 0;
           milLeft++;
         }
-
         if (milLeft > 9) {
           milLeft = 0;
           secRight++;
         }
-
         if (secRight > 9) {
           secRight = 0;
           secLeft++;
         }
-
         if (secLeft > 5) {
           secLeft = 0;
           minRight++;
         }
-
         if (minRight > 9) {
           minRight = 0;
           minleft++;
@@ -46,9 +48,24 @@ export function Chrono() {
         return { minleft, minRight, secLeft, secRight, milLeft, milRight };
       });
     }, 10);
-
-    return () => clearInterval(interval);
   }, []);
+
+  const pauseChrono = useCallback(() => {
+    if (interval.current !== null) {
+      clearInterval(interval.current);
+      interval.current = null;
+    }
+  }, []);
+
+  useEffect(() => {
+    if (chronoState === "start") {
+      startChrono();
+    }
+
+    if (chronoState === "pause") {
+      pauseChrono();
+    }
+  }, [chronoState, startChrono, pauseChrono]);
 
   return (
     <div>
