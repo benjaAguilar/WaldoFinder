@@ -124,6 +124,41 @@ button:focus-visible {
   border-bottom-right-radius: 1rem;
 }
 
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 1rem;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  button {
+    color: red;
+    align-self: flex-end;
+  }
+
+  i {
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
