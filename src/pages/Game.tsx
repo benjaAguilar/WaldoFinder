@@ -1,27 +1,27 @@
 import { useEffect, useRef, useState } from "react";
-import mockDB from "../mockDB.json";
 import { Chrono } from "../components/Chrono";
+import { useLocation } from "react-router-dom";
+import { ImageData } from "../types/waldoImages";
+import { fetchData } from "../utils/fetchData";
 
 export function Game() {
+  const location = useLocation();
+  const dbImageData: ImageData | null = location.state || null;
+
+  console.log(dbImageData);
+
   const imageRef = useRef<HTMLImageElement | null>(null);
   const crossElement = useRef<HTMLDivElement | null>(null);
-  const [waldoGame, setWaldoGame] = useState(mockDB.waldoBeach);
   const [actualCoords, setActualCoords] = useState({
     x1: 0,
     y1: 0,
     x2: 0,
     y2: 0,
   });
+  const [chronoState, setChronoState] = useState("pause");
 
   useEffect(() => {
     window.addEventListener("resize", calculateCoords);
-
-    const game = localStorage.getItem("game");
-    if (game === "Waldo and warriors") {
-      setWaldoGame(mockDB.waldoWarriors);
-    } else if (game === "Waldo and dragons") {
-      setWaldoGame(mockDB.waldoDragons);
-    }
 
     return () => window.removeEventListener("resize", calculateCoords);
   }, [calculateCoords]);
@@ -29,23 +29,60 @@ export function Game() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function calculateCoords() {
     if (!imageRef.current) return;
+    if (!dbImageData) return;
 
-    const imageData = imageRef.current.getBoundingClientRect();
-    console.log(imageData);
+    const currentImageData = imageRef.current.getBoundingClientRect();
+
     setActualCoords({
       x1:
-        (waldoGame.coords.x1 * imageData.width) / waldoGame.width +
-        imageData.left,
+        (dbImageData.x1 * currentImageData.width) / dbImageData.width +
+        currentImageData.left,
       x2:
-        (waldoGame.coords.x2 * imageData.width) / waldoGame.width +
-        imageData.left,
+        (dbImageData.x2 * currentImageData.width) / dbImageData.width +
+        currentImageData.left,
       y1:
-        (waldoGame.coords.y1 * imageData.height) / waldoGame.height +
-        imageData.top,
+        (dbImageData.y1 * currentImageData.height) / dbImageData.height +
+        currentImageData.top,
       y2:
-        (waldoGame.coords.y2 * imageData.height) / waldoGame.height +
-        imageData.top,
+        (dbImageData.y2 * currentImageData.height) / dbImageData.height +
+        currentImageData.top,
     });
+  }
+
+  async function addStartDate() {
+    const userWithStartDate = await fetchData(
+      "/user/startDate",
+      "PUT",
+      {
+        "Content-Type": "application/json",
+      },
+      JSON.stringify({ dateISO: new Date().toISOString() })
+    );
+
+    if (!userWithStartDate.success) {
+      return alert(userWithStartDate.message);
+    }
+
+    console.log("start date added!");
+    console.log(userWithStartDate);
+  }
+
+  async function addEndDate() {
+    const userWithEndDate = await fetchData(
+      "/user/endDate",
+      "PUT",
+      {
+        "Content-Type": "application/json",
+      },
+      JSON.stringify({ dateISO: new Date().toISOString() })
+    );
+
+    if (!userWithEndDate.success) {
+      return alert(userWithEndDate.message);
+    }
+
+    console.log("end date added!");
+    console.log(userWithEndDate);
   }
 
   function getCoords(e: React.MouseEvent<HTMLImageElement>) {
@@ -63,13 +100,16 @@ export function Game() {
       e.clientY <= adjustedY1
     ) {
       waldoIsFound = true;
+      setChronoState("pause");
+      addEndDate();
       console.log("You found Waldo!");
       alert("You found Waldo!");
     }
 
     if (crossElement.current) {
       if (waldoIsFound) {
-        crossElement.current.firstChild.textContent = "✔";
+        if (crossElement.current.firstChild)
+          crossElement.current.firstChild.textContent = "✔";
         crossElement.current.style.color = "greenyellow";
         crossElement.current.style.borderColor = "greenyellow";
       }
@@ -83,7 +123,7 @@ export function Game() {
       crossElement.current.style.left = `${e.clientX - width / 2}px`;
 
       setTimeout(() => {
-        crossElement.current.style.display = "none";
+        if (crossElement.current) crossElement.current.style.display = "none";
       }, 2000);
     }
   }
@@ -91,16 +131,24 @@ export function Game() {
   return (
     <>
       <div className="chrono">
-        <Chrono />
+        <Chrono chronoState={chronoState} />
       </div>
-      <img
-        className="waldoImage"
-        src={waldoGame.img}
-        alt="Waldo's game"
-        ref={imageRef}
-        onClick={getCoords}
-        onLoad={calculateCoords}
-      />
+      {dbImageData ? (
+        <img
+          className="waldoImage"
+          src={dbImageData.imgRoute}
+          alt={`${dbImageData.name} game`}
+          ref={imageRef}
+          onClick={getCoords}
+          onLoad={() => {
+            addStartDate();
+            setChronoState("start");
+            calculateCoords();
+          }}
+        />
+      ) : (
+        <p>error loading db data</p>
+      )}
       <div className="cross" ref={crossElement}>
         <div>✘</div>
       </div>
