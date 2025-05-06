@@ -26,6 +26,16 @@ export function WaldoCard({ imageData }: waldoCardProps) {
     navigate("/game", { state: imageData });
   }
 
+  async function getLeaderboard(leaderboardId: number) {
+    const leaderboard = await fetchData(`/leaderboard/${leaderboardId}`, "GET");
+
+    if (!leaderboard.success) {
+      return alert(leaderboard.message);
+    }
+
+    navigate("/leaderboard", { state: leaderboard });
+  }
+
   return (
     <div className="card">
       <img src={imageData.imgRoute} alt={`${name} image`} />
@@ -39,7 +49,13 @@ export function WaldoCard({ imageData }: waldoCardProps) {
         >
           Play
         </button>
-        <button>Leaderboard</button>
+        <button
+          onClick={() => {
+            getLeaderboard(imageData.leaderboard.id);
+          }}
+        >
+          Leaderboard
+        </button>
       </div>
     </div>
   );
