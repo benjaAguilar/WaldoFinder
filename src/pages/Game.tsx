@@ -3,6 +3,7 @@ import { Chrono } from "../components/Chrono";
 import { useLocation } from "react-router-dom";
 import { ImageData } from "../types/waldoImages";
 import { fetchData } from "../utils/fetchData";
+import { VictoryModal } from "../components/VictoryModal";
 
 export function Game() {
   const location = useLocation();
@@ -19,6 +20,8 @@ export function Game() {
     y2: 0,
   });
   const [chronoState, setChronoState] = useState("pause");
+  const [userTime, setUserTime] = useState("00:00.00");
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     window.addEventListener("resize", calculateCoords);
@@ -81,6 +84,7 @@ export function Game() {
       return alert(userWithEndDate.message);
     }
 
+    setUserTime(userWithEndDate.userWithEndDateAndTime.time);
     console.log("end date added!");
     console.log(userWithEndDate);
   }
@@ -102,6 +106,7 @@ export function Game() {
       waldoIsFound = true;
       setChronoState("pause");
       addEndDate();
+      setShowModal(true);
       console.log("You found Waldo!");
       alert("You found Waldo!");
     }
@@ -130,6 +135,7 @@ export function Game() {
 
   return (
     <>
+      {showModal ? <VictoryModal time={userTime} /> : null}
       <div className="chrono">
         <Chrono chronoState={chronoState} />
       </div>
