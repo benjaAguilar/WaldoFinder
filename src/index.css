@@ -159,6 +159,27 @@ button:focus-visible {
   }
 }
 
+.leaderboard-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100vw;
+  padding: 2rem;
+  box-sizing: border-box;
+  .grd {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    div {
+      border: 2px solid rgba(255, 255, 255, 0.87);
+      padding: 0.5rem;
+    }
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
