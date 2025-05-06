@@ -3,6 +3,7 @@ import { Home } from "./pages/Home";
 import { Game } from "./pages/Game";
 
 import { ErrorPage } from "./pages/ErrorPage";
+import { Leaderboard } from "./pages/Leaderboard";
 
 export const router = createBrowserRouter([
   {
@@ -13,5 +14,9 @@ export const router = createBrowserRouter([
   {
     path: "/game",
     element: <Game />,
+  },
+  {
+    path: "/leaderboard",
+    element: <Leaderboard />,
   },
 ]);
