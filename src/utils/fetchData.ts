@@ -1,5 +1,5 @@
 const server = import.meta.env.VITE_PUBLIC_SERVER;
-console.log(server);
+
 class CustomError extends Error {
   details: Record<string, any>;
 

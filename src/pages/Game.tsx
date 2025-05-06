@@ -9,8 +9,6 @@ export function Game() {
   const location = useLocation();
   const dbImageData: ImageData | null = location.state || null;
 
-  console.log(dbImageData);
-
   const imageRef = useRef<HTMLImageElement | null>(null);
   const crossElement = useRef<HTMLDivElement | null>(null);
   const [actualCoords, setActualCoords] = useState({
@@ -65,9 +63,6 @@ export function Game() {
     if (!userWithStartDate.success) {
       return alert(userWithStartDate.message);
     }
-
-    console.log("start date added!");
-    console.log(userWithStartDate);
   }
 
   async function addEndDate() {
@@ -85,8 +80,6 @@ export function Game() {
     }
 
     setUserTime(userWithEndDate.userWithEndDateAndTime.time);
-    console.log("end date added!");
-    console.log(userWithEndDate);
   }
 
   function getCoords(e: React.MouseEvent<HTMLImageElement>) {

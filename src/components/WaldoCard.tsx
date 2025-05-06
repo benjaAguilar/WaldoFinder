@@ -19,9 +19,6 @@ export function WaldoCard({ imageData }: waldoCardProps) {
       return alert(user.message);
     }
 
-    console.log("user created!");
-    console.log(user);
-
     // enviar al usuario a jugar el juego elegido, incluyendo toda la data
     navigate("/game", { state: imageData });
   }
